@@ -1,0 +1,58 @@
+from calendar import TUESDAY
+from datetime import date, datetime, timedelta
+
+users=[
+    {
+        "name":"Bill", 
+        "birthday":"1998-02-12"
+    },
+        {
+        "name":"Ben", 
+        "birthday":"1998-02-13"
+    },
+    {
+        "name":"Giil", 
+        "birthday":"1999-02-10"
+    },
+    {
+        "name":"Till",
+        "birthday":"2000-02-15"
+    },
+        {
+        "name":"Ned",
+        "birthday":"2000-02-15"
+    }
+]
+Monday = ['Monday']
+Tuesday = ['Tuesday']
+Wednesday = ['Wednesday']
+Thursday = ['Thursday']
+Friday = ['Friday']
+
+day_for_congratulations = {5:Monday, 6:Monday, 0:Monday, 1:Tuesday, 2:Wednesday, 3:Thursday, 4:Friday} #день недели дня роджения: рабочий день, когда нужно поздравить
+
+
+curr_date = date.today()
+curr_year = curr_date.year
+diff = 5 - curr_date.weekday()
+
+day_from = curr_date + timedelta(days=diff)
+day_till = day_from + timedelta(days=6)
+
+
+for name_birth in users:
+    birthday_str = name_birth.get('birthday')
+    name_str = name_birth.get('name')    
+    birthday_dt = datetime.strptime(birthday_str, "%Y-%m-%d")
+    birt_dt_curr_year = date(year=curr_year, month=birthday_dt.month, day=birthday_dt.day)
+    if birt_dt_curr_year >= day_from and birt_dt_curr_year <= day_till:
+        wkday = datetime.weekday(birt_dt_curr_year)
+        day_for_congratulations.get(wkday).append(name_str)
+
+def get_birthdays_per_week():      
+    print(f'Birthday people list from {day_from} till {day_till}:')
+    for wkday, day_for_congr in day_for_congratulations.items():
+        if wkday < 5 and len(day_for_congr) > 1:
+            print (day_for_congr[0] + ": "+ ', '.join(day_for_congr[1:]))
+
+get_birthdays_per_week()
